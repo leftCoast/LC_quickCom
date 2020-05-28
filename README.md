@@ -63,4 +63,27 @@ Or if now reply is desired..
 **But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length of any command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. It's written like this to keep the slave's RAM footprint miniized.
 
 
-And that's about it for the slave side. Listen for commands, deal with commands. Boring life.
+And that's about it for the slave side. Listen for commands, deal with commands. Boring life.  
+
+
+# LC_commonComs
+
+While writing code for talking from one processor to another, there are a number of things that one runs into over and over. As an example.. Send out a one byte command and expect a byte, int, float, string to be returned. Wouldn't it be nice if we could just do all this in one method? Drop in a one byte command and it returns the result. That's what commonComs is all about.
+
+**How to use this?** commonComs is derived from qCMaster. It has all the qCMaster calls, but it also add some eay to use methods.   
+
+```
+bool  getByte(byte com,byte* reply);
+bool  getInt(byte com,int* reply);
+bool  getFloat(byte com,float* reply);
+bool  getLong(byte com,long* reply);
+bool  getUnsignedLong(byte com,unsigned long* reply);
+bool  getCString(byte com,char* reply);
+bool  sendCommand(byte com);
+```  
+
+All the methods take a command byte. This assumes your slave can repond to a single byte command, but that's not too uncommon. You supply the command byte and a pointer to the kind of reply expected. The methods return true for a successful action. False for an error. If there is to be no reply, the sendCommand() method is suppied for just this purpose.
+
+NOTE : Be sure both processors agree on the size and ordering of the bytes for the varibles you choose to use.
+
+
