@@ -50,6 +50,17 @@ Or, if no reply has been asked for..
 
 **3 :** Being a slave, its main job is to listen for the commands of its master. Therefor the usual practice is to call the com object's haveBuff() method repeatedly in the main loop() function.  
 
-``` if (ourCom.haveBuff()) { handleCOmmand(); }```   
+```if (ourCom.haveBuff()) { handleCommand(); }```   
+
+**4 :** When handling a command either a reply will have to be returnd by calling the replyComBuff() method with the number of bytes to send back. Or, if no reply is to be returned, slaveReset() must be called to reset to listening for commands.  
+
+```ourCom.replyComBuff(numBytes);```  
+
+Or if now reply is desired..  
+
+```ourCom.slaveReset();```   
+
+**But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. Its written like this to keep the slave's RAM footprint miniized.
+
 
 And that's about it for the slave side. Listen for commands, deal with commands. Boring life.
