@@ -22,10 +22,10 @@ These classes are both idlers. Meaning, you must call idle() in the loop() funct
 **Master class** standard operation.  
 
 
-**1 :** create a quickCom master class instance.  
+**1 :** Create a quickCom master class instance.  
 ```qCMaster ourCom;```
 
-**2 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.  
+**2 :** Initialse the quickCom object calling its begin() method with the baud rate to use. This should be done in your setup() function.  
 ```ourCom.begin();```
 
 **3 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired. This just starts the comminication, the program can go off and do whatever it needs to do while this transaction is going on.  
@@ -33,12 +33,23 @@ These classes are both idlers. Meaning, you must call idle() in the loop() funct
 
 **4 :** After calling sendBuff(), repeatedly call either haveBuff() if you are looking for a reply, or isSending() if you are not. haveBuff() returns the number of bytes in the reply once it has been completely received. Meaning, the reply is ready to be handled. isSending() just returns a false when the outgoing message has been completely transmitted. Meaning, the hardwaqre is ready to send the next message.  
 
-```if (haveBuff()) { handleReply(); }```  
+```if (ourCom.haveBuff()) { handleReply(); }```  
 
-Or, if no reply has been asked for  
+Or, if no reply has been asked for..  
 
-```if (!isSending()) { readdyToSend = true; }```  
+```if (!ourCom.isSending()) { readdyToSend = true; }```  
 
 
 **Slave class** standard operation.
 
+**1 :** Create a quickCom slave class instance.  
+```qCSlave ourCom;```
+
+**2 :** Initialse the quickCom object calling its begin() method with the address of the message buffer, the number of bytes that the message buffer can hold and the baud rate to use.  This is usualy done in your setup() function.  
+```ourCom.begin(buffPtr,numBytes,baud);```  
+
+**3 :** Being a slave, its main job is to listen for the commands of its master. Therefor the usual practice is to call the com object's haveBuff() method repeatedly in the main loop() function.  
+
+``` if (ourCom.haveBuff()) { handleCOmmand(); }```   
+
+And that's about it for the slave side. Listen for commands, deal with commands. Boring life.
