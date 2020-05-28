@@ -22,10 +22,11 @@ These classes are both idlers. Meaning, you must call idle() in the loop() funct
 **Master class** standard operation.  
 
 
-**1 :** create a quickCom master class instance.
-```qCMaster ourCom();```
+**1 :** create a quickCom master class instance.  
+```qCMaster ourCom;```
 
-**2 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.
+**2 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.  
+```ourCom.begin();```
 
 **3 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired.
 
