@@ -45,7 +45,7 @@ Or, if no reply has been asked for..
 **1 :** Create a quickCom slave class instance.  
 ```qCSlave ourCom;```
 
-**2 :** Initialse the quickCom object calling its begin() method with the address of the message buffer, the number of bytes that the message buffer can hold and the baud rate to use.  This is usualy done in your setup() function.  
+**2 :** Initialize the quickCom object calling it's begin() method with the address of the message buffer, the number of bytes that the message buffer can hold and the baud rate to use.  This is usualy done in your setup() function.  
 ```ourCom.begin(buffPtr,numBytes,baud);```  
 
 **3 :** Being a slave, its main job is to listen for the commands of its master. Therefor the usual practice is to call the com object's haveBuff() method repeatedly in the main loop() function.  
@@ -60,7 +60,7 @@ Or if now reply is desired..
 
 ```ourCom.slaveReset();```   
 
-**But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. Its written like this to keep the slave's RAM footprint miniized.
+**But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length of any command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. It's written like this to keep the slave's RAM footprint miniized.
 
 
 And that's about it for the slave side. Listen for commands, deal with commands. Boring life.
