@@ -1,5 +1,5 @@
 # LC_quickCom
-Library for master/slave communication. ( Processor to processor over serial link )
+Library for master/slave communication. ( IE : Processor to processor over serial link )
 
 **Depeneds on**  
 [LC_baseTools](https://github.com/leftCoast/LC_baseTools)
