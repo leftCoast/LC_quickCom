@@ -17,7 +17,7 @@ There are two #define(s) in quickCom.h..
 ```
 As it says, you will need to set these two to match your hardware setup.
 
-These classes are both idlers. Meaning, you must call idle() in the loop() functions for both processors. It also means **no delay() calls**. But that's going to be fine, because whatever you wanted to use delay() for can be rewritten to use the timeObj class.
+These classes are both idlers. Meaning, you must call idle() in the loop() functions for both processors. It also means **no delay() calls**. But that's going to be fine, because whatever you wanted to use delay() for, can be rewritten to use the timeObj class.
 
 **Master class** standard operation.  
 
