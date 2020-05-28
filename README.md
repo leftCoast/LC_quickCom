@@ -28,9 +28,13 @@ These classes are both idlers. Meaning, you must call idle() in the loop() funct
 **2 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.  
 ```ourCom.begin();```
 
-**3 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired.
+**3 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired. This just starts the comminication, the program can go off and do whatever it needs to do while this transaction is going on.  
+```sendBuff(buffPtr,numBytes,wantReply);```
 
 **4 :** After calling sendBuff(), repeatedly call either haveBuff() if you are looking for a reply, or isSending() if you are not. haveBuff() returns the number of bytes in the reply once it has been completely received. Meaning, the reply is ready to be handled. isSending() just returns a false when the outgoing message has been completely transmitted. Meaning, the hardwaqre is ready to send the next message.
+```if (haveBuff()) { handleReply(); }```  
+Or, if no reply has been asked for  
+```if (!isSending()) { readdyToSend = true; }```  
 
 **Slave class** standard operation.
 
