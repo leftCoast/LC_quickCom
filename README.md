@@ -66,6 +66,7 @@ Or if now reply is desired..
 And that's about it for the slave side. Listen for commands, deal with commands. Boring life.  
 
 
+
 # LC_commonComs
 
 While writing code for talking from one processor to another, there are a number of things that one runs into over and over. As an example.. Send out a one byte command and expect a byte, int, float, string to be returned. Wouldn't it be nice if we could just do all this in one method? Drop in a one byte command and it returns the result. That's what commonComs is all about.
@@ -91,6 +92,8 @@ bool  sendCommand(byte com);
 ```  
 
 All the methods take a command byte. This assumes your slave can repond to a single byte command, but that's not too uncommon. You supply the command byte and a pointer to the kind of reply expected. The methods return true for a successful action. False for an error. If there is to be no reply, the sendCommand() method is suppied for just this purpose.
+
+These methods if called in your loop() function will actually block your loop() while they exicute. But they will not block all your idlers from running in the background. In this way much of your application will continue to fiunction. Unlike delay() where ***everything*** stops.
 
 **NOTE :** Be sure both processors agree on the size and ordering of the bytes for the varibles you choose to use.
 
