@@ -6,7 +6,7 @@ Library for master/slave communication. ( IE : Processor to processor over seria
 
 **Master slave communicaton.** Master initiates **all** communication. Slave can **only respond** to a command. This is to keep everything in sync. And, this is the model that this library is based on.
 
-**Message format.** The messages are 1..255 byte buffers of raw data. For those that are wondering, there's actually an initial byte that is not shown to the user. That is the number of bytes being transmitted. Its best not to think about that, because it tends to get one all confused about how many bytes a message is etc.
+**Message format.** The messages are 1..255 byte buffers of raw data. For those that are wondering, there's actually an initial byte that is not shown to the user. That is the number of bytes being transmitted. It's best not to think about that, because it tends to get one all confused about how many bytes a message is etc.
 
 **How to use this?** There are two classes qCMaster and qCSlave. Create an instance of qCMaster on your master processor and an instance of qCSlave on your slave processor. 
 
