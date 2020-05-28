@@ -76,7 +76,7 @@ While writing code for talking from one processor to another, there are a number
 **1 :** Create your commonComs object.  
 ```commonComs ourCom;```  
 
-**2 :** Call the commonComs begin() durint setuo() with teh baud rate to use.  
+**2 :** Call the commonComs begin() during setup() with the baud rate to use.  
 ```ourCom.begin(baud);```  
 
 **3 :** Use the commonComs methods to retrieve the types of data your slave processor is setup for.  
