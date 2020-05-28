@@ -17,11 +17,19 @@ There are two #define(s) in quickCom.h..
 ```
 As it says, you will need to set these two to match your hardware setup.
 
-These classes are both idlers. Meaning, you must call ```idle()``` in the loop() functions for both processors. It also means no delay() calls. But that's going to be fine because whatever you wanted to use delay() for can be rewritten to use the timeObj class.
+These classes are both idlers. Meaning, you must call idle() in the loop() functions for both processors. It also means **no delay() calls**. But that's going to be fine, because whatever you wanted to use delay() for can be rewritten to use the timeObj class.
 
-Lets take the master side to begin with.
-**1 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.
+**Master class** standard operation.  
 
-**2 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired.
 
-**3 :** After calling sendBuff(), repeatedly call either haveBuff() if you are looking for a reply, or isSending() if you are not. haveBuff() returns the number of bytes in the reply once it has been completely received. Meaning, the reply is ready to be handled. isSending() just returns a false when the outgoing message has been completely transmitted. Meaning, the hardwaqre is ready to send the next message.
+**1 :** create a quickCom master class instance.
+```qCMaster ourCom();```
+
+**2 :** Initialse the quickCom object calling its begin() method with the baud rate yo are going to use. This should be done in your setup() function.
+
+**3 :** When you need to pass over a block off data; Set up a buffer with the data and call the sendBuff() method with the buffer, the number of bytes loaded in it and if a reply is desired.
+
+**4 :** After calling sendBuff(), repeatedly call either haveBuff() if you are looking for a reply, or isSending() if you are not. haveBuff() returns the number of bytes in the reply once it has been completely received. Meaning, the reply is ready to be handled. isSending() just returns a false when the outgoing message has been completely transmitted. Meaning, the hardwaqre is ready to send the next message.
+
+**Slave class** standard operation.
+
