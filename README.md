@@ -70,7 +70,15 @@ And that's about it for the slave side. Listen for commands, deal with commands.
 
 While writing code for talking from one processor to another, there are a number of things that one runs into over and over. As an example.. Send out a one byte command and expect a byte, int, float, string to be returned. Wouldn't it be nice if we could just do all this in one method? Drop in a one byte command and it returns the result. That's what commonComs is all about.
 
-**How to use this?** commonComs is derived from qCMaster. It has all the qCMaster calls, but it also add some eay to use methods.   
+**How to use this?** commonComs is derived from qCMaster. It has all the qCMaster calls, but it also adds some easy to use methods.   
+
+**1 :** Create your commonComs object.  
+```commonComs ourCom;```  
+
+**2 :** Call the commonComs begin() durint setuo() with teh baud rate to use.
+
+**3 :** Use the commonComs methods to retrieve the types of data your slave processor is setup for.  
+
 
 ```
 bool  getByte(byte com,byte* reply);
@@ -84,6 +92,6 @@ bool  sendCommand(byte com);
 
 All the methods take a command byte. This assumes your slave can repond to a single byte command, but that's not too uncommon. You supply the command byte and a pointer to the kind of reply expected. The methods return true for a successful action. False for an error. If there is to be no reply, the sendCommand() method is suppied for just this purpose.
 
-NOTE : Be sure both processors agree on the size and ordering of the bytes for the varibles you choose to use.
+**NOTE :** Be sure both processors agree on the size and ordering of the bytes for the varibles you choose to use.
 
 
