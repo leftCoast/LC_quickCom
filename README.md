@@ -76,10 +76,10 @@ While writing code for talking from one processor to another, there are a number
 **1 :** Create your commonComs object.  
 ```commonComs ourCom;```  
 
-**2 :** Call the commonComs begin() durint setuo() with teh baud rate to use.
+**2 :** Call the commonComs begin() durint setuo() with teh baud rate to use.  
+```ourCom.begin(baud);```  
 
 **3 :** Use the commonComs methods to retrieve the types of data your slave processor is setup for.  
-
 
 ```
 bool  getByte(byte com,byte* reply);
@@ -91,9 +91,9 @@ bool  getCString(byte com,char* reply);
 bool  sendCommand(byte com);
 ```  
 
-All the methods take a command byte. This assumes your slave can repond to a single byte command, but that's not too uncommon. You supply the command byte and a pointer to the kind of reply expected. The methods return true for a successful action. False for an error. If there is to be no reply, the sendCommand() method is suppied for just this purpose.
+All the methods assume your slave processor can repond to single byte commands, but that's not too uncommon. You supply the command byte and a pointer to the kind of reply expected. The methods return true for a successful action. False for an error. If there is to be no reply, the sendCommand() method is suppied for just this purpose.
 
-These methods if called in your loop() function will actually block your loop() while they exicute. But they will not block all your idlers from running in the background. In this way much of your application will continue to fiunction. Unlike delay() where ***everything*** stops.
+These methods, if called in your loop() function, will actually block your loop() while they execute. But, they will **not** block all your idlers from running in the background. In this way much of your application will continue to function. Unlike delay(), where ***everything*** stops.
 
 **NOTE :** Be sure both processors agree on the size and ordering of the bytes for the varibles you choose to use.
 
