@@ -247,7 +247,7 @@ qCSlave::~qCSlave(void) { }
 // reply you write it onto this same buffer. This is to save as much RAM footprint
 // as possible for -little- processors.
 //
-// NOTE : The most bytes that can be sent is 255. So don't go overboard on buffer
+// NOTE : The most bytes that can be sent is 256. So don't go overboard on buffer
 // size.
 void qCSlave::begin(byte* buff,byte numBytes,int baud) {
 
@@ -284,24 +284,25 @@ byte qCSlave::readErr(void) {
 // toss out a billion pointless errors here.
 byte qCSlave::haveBuff(void) {
 	
-	if(mState==holding) {
-		return mBuff[0];
+	if(mState==holding) {	// If we have a complete command..
+		return mBuff[0];		// First byte is count of data bytes.
 	}
-	return 0;
+	return 0;					// Otherwise, no bytes for you!
 }
 
+
+// We were wrong. CLear our error and let us begin anew.
 void  qCSlave::slaveReset(void) {
 
-	
-	readErr();
-	mState = listening;
+	readErr();				// Clear any errors.
+	mState = listening;	// Go back to listening.
 }
 
 
 // Get the comunication buffer;
 byte* qCSlave::getComBuff(void) {
 
-	return &(mBuff[1]);
+	return &(mBuff[1]); // Return the address of the second byte. ( Data stats there )
 }
 
 
@@ -309,9 +310,9 @@ byte* qCSlave::getComBuff(void) {
 void qCSlave::replyComBuff(byte numBytes) {
 
 	if (mState == holding) {	// We have to be holding to want a reply.
-		mBuff[0] = numBytes;		// 
-		mNumBytesMoved = 0;
-		mState = replying;
+		mBuff[0] = numBytes;		// Plunk in the amount of bytes to shift over.
+		mNumBytesMoved = 0;		// And we ain't shifter any yet.
+		mState = replying;		// We will be replying now.
 	} else {
 		mError = STATE_ERR;		// Getting your calls mixed up there?
 	}
@@ -333,9 +334,9 @@ void qCSlave::idle(void) {
 }
 
 
-// The Feather seems to preload a Zero into the incoming stream when it fires up.
-// This is an error and it only happens when the USB cable is not connected.
-// So, we ignore leading zeros because they're an erros as a leading byte anyway.
+// The Adafruit Feather seems to preload a Zero into the incoming stream when it fires up.
+// This is an error and it only happens when the USB cable is not connected. So, we ignore
+// leading zeros because they're an error as a leading byte anyway.
 void qCSlave::doListen(void) {
 	
 	byte	numBytes;
@@ -345,13 +346,13 @@ void qCSlave::doListen(void) {
 		numBytes = SLAVE_PORT.read();						// First byte SHALL BE the number of bytes for the message.
 		if (numBytes>0) {										// First byte can't be a zero.
 			if (mNumBytes>=(numBytes+1)) {				// If we can hold the message.
-				mBuff[0] = numBytes;							// That first byte shwing size.
+				mBuff[0] = numBytes;							// That first byte showing size.
 				mNumBytesMoved = 0;							// Setup for a reading..
 				start();											// We start the timer from the first byte.
-				mState = recieveing;							//
+				mState = recieveing;							// We are now in receive mode.
 				doReceiving();									// Might as well grab what we can now.
 			} else {												// Now what should we do? We can't fit the message!
-				start();	
+				start();											// We still start the timer from the first byte.
 				while(SLAVE_PORT.available() 
 						&& mNumBytesMoved<=numBytes
 						&& !ding()) {							// Roll out the message on the floor.
@@ -370,7 +371,7 @@ void qCSlave::doReceiving(void) {
 	
 	while(SLAVE_PORT.available()							// While there are bytes to read.
 			&& mNumBytesMoved<mBuff[0]						// And we still HAVE bytes we NEED to read.
-			&& !ding()) {										// AND, not time out (SENDER CRASHED)
+			&& !ding()) {										// AND, not timed out (SENDER CRASHED)
 		mNumBytesMoved++;										// Keep track of this.
 		mBuff[mNumBytesMoved] = SLAVE_PORT.read();	// We read bytes!
 	}

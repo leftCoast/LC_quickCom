@@ -27,7 +27,7 @@
 // I put that last note in because I forgot and had to come over here and look.
 
 
-#define MASTER_PORT	Serial1	// For now this is all I could come up with.
+#define MASTER_PORT	Serial1	// For now, this is all I could come up with.
 #define SLAVE_PORT	Serial1	// Change these to reflect your hardware setup.
 
 #define	MASTER_REPLY_TIMEOUT		15000		// Defaults. How long to wait for a reply.
