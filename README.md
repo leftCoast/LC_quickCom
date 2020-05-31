@@ -1,7 +1,7 @@
 # LC_quickCom
 Library for master/slave communication. ( IE : Processor to processor over serial link )
 
-**Depeneds on**  
+**Depends on**  
 [LC_baseTools](https://github.com/leftCoast/LC_baseTools)
 
 **Master slave communicaton.** Master initiates **all** communication. Slave can **only respond** to a command. This is to keep everything in sync. And, this is the model that this library is based on.
