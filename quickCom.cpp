@@ -60,6 +60,7 @@ bool qCMaster::sendBuff(byte* buff,byte buffLen,bool wantReply) {
 				mBuff[i+1]=buff[i];
 			}
 			mState = sending;
+			start();
 			return true;
 		} else {
 			mError = MEMORY_ERR;
