@@ -30,7 +30,7 @@
 #define MASTER_PORT	Serial1	// For now, this is all I could come up with.
 #define SLAVE_PORT	Serial1	// Change these to reflect your hardware setup.
 
-#define	MASTER_REPLY_TIMEOUT		 1000		// Defaults. How long to wait for a reply.
+#define	MASTER_REPLY_TIMEOUT		 3000		// Defaults. How long to wait for a reply.
 #define	SLAVE_COMMAND_TIMEOUT	  500		// How long to finish receiving a command.
 
 
@@ -55,7 +55,6 @@ class qCMaster : public idler, public timeObj {
 				void				doSending(void);
 				void				doListen(void);
 				void				doReceiving(void);
-				bool				resizeQBuff(byte numBytes);
 				
 				masterStates	mState;
 				byte				mNumBytesMoved;

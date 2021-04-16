@@ -1,5 +1,5 @@
 #include "quickCom.h"
-
+#include <resizeBuff.h>
 
 // ***************************************************************************
 // ********************************* qCMaster ********************************
@@ -52,7 +52,7 @@ bool qCMaster::sendBuff(byte* buff,byte buffLen,bool wantReply) {
 	byte	i;
 	
 	if (mState==standby && buffLen) {		// Ok, if we've nothing better going on..
-		if (resizeQBuff(buffLen+1)) {			// we are able to get a buffer.
+		if (resizeBuff(buffLen+1,&mBuff)) {	// we are able to get a buffer.
 			mNumBytesMoved = 0;
 			mWantReply = wantReply;
 			mBuff[0] = buffLen;
@@ -95,7 +95,7 @@ void qCMaster::readBuff(byte* buff) {
 		for(i=0;i<mBuff[0];i++) {
 			buff[i] = mBuff[i+1];
 		}
-		resizeQBuff(0);
+		resizeBuff(0,&mBuff);
 		mState = standby;
 	} else {
 		mError = STATE_ERR;						// We didn't say there was a buffer for you.
@@ -107,7 +107,7 @@ void qCMaster::readBuff(byte* buff) {
 void qCMaster::dumpBuff(void) {
 
 	if(mState==holding) {
-		resizeQBuff(0);
+		resizeBuff(0,&mBuff);
 		mState = standby;
 	}
 }
@@ -126,7 +126,6 @@ void qCMaster::idle(void) {
 		case sending		: doSending();		break;	// Work on sending.
 		case recieveing	: doReceiving();	break;	// Work on receiving.
 		default				: break;							// It theoretically can't get here.
-	
 	}
 }
 
@@ -142,7 +141,7 @@ void qCMaster::doSending(void) {
 		mNumBytesMoved++;
 	}
 	if (mNumBytesMoved == mBuff[0]+1) {
-		resizeQBuff(0);									// Done with it.
+		resizeBuff(0,&mBuff);									// Done with it.
 		if (mWantReply) {
 			start();										// Start the reply timer.
 			mState = listening;
@@ -157,14 +156,14 @@ void qCMaster::doListen(void) {
 	
 	byte	numBytes;
 	byte	dumpByte;
-	
+
 	if (ding()) {											// Time out? Nothing came?
 		mError = TIMEOUT_ERR;							// Flag the error.
 		mState = standby;									// Reset our state, sigh..
 	} else {
 		if (MASTER_PORT.available()) {				// Is there someting to read from the port?
 			numBytes = MASTER_PORT.read();			// First byte SHALL BE the number of bytes for the message.
-			if (resizeQBuff(numBytes+1)) {			// Setup buffer.
+			if (resizeBuff(numBytes+1,&mBuff)) {	// Setup buffer.
 				mBuff[0] = numBytes;						// Save size.
 				mNumBytesMoved = 0;						// Setup for a reading..
 				mState = recieveing;						//
@@ -197,28 +196,11 @@ void qCMaster::doReceiving(void) {
 	if (mNumBytesMoved == mBuff[0]) {
 		mState = holding;
 	} else if (ding()) {
-		resizeQBuff(0);
+		resizeBuff(0,&mBuff);
 		mError = TIMEOUT_ERR;
 		mState = standby;
 	}
 }
-
-
-// We're using a dynamically sized buffer. mBuff() & free(). This
-// just auto-manages all of this.
-bool qCMaster::resizeQBuff(byte numBytes) {
-
-	if (mBuff) {
-		free(mBuff);
-		mBuff = NULL;
-	}
-	if (numBytes) {
-		mBuff = (byte*)malloc(numBytes);
-		return mBuff != NULL;
-	}
-	return true;								// Because they asked for none.
-}
-
 
 
 // ***************************************************************************
