@@ -60,7 +60,7 @@ Or if now reply is desired..
 
 ```ourCom.slaveReset();```   
 
-**But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length of any command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. It's written like this to keep the slave's RAM footprint miniized.
+**But what about the reply buffer?** There is only one buffer used in the slave version. It must be sized to hold the maximum length of any command or reply. One reads the command data out of this buffer, then writes the reply over the top of this data before sending it back. It's written like this to keep the slave's RAM footprint minimized.
 
 
 And that's about it for the slave side. Listen for commands, deal with commands. Boring life.  
